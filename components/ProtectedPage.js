@@ -8,7 +8,7 @@ const ProtectedPage = ({ children }) => {
 
   useLayoutEffect(() => {
     if (!user_id) logout(router.route);
-  }, []);
+  }, [user_id, router.route, logout]);
 
   return <>{children}</>;
 };

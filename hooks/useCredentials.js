@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Cookie from "js-cookie";
 
 // utils
-import useService from "../utils/useService";
+import service from "../utils/service";
 
 const useCredentials = () => {
   const [user_id, setUser_id] = useState();
@@ -13,7 +13,7 @@ const useCredentials = () => {
     if (!Cookie.get("token")) return setLoading(false);
     // check if token cookie is valid and update user_id
     try {
-      const data = await useService("get user");
+      const data = await service("get user");
       if (data.token) setUser_id(data.user.user_id);
     } catch (error) {
       Cookie.remove("token");
