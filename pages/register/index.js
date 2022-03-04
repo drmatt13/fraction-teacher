@@ -52,8 +52,8 @@ const Register = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col items-center p-4 bg-white rounded-lg animate-fade-in">
-          <div className="flex flex-col mt-2">
+        <div className="flex flex-col items-center w-60 p-4 bg-white rounded-lg animate-fade-in">
+          <div className="flex flex-col mt-2 w-52">
             <input
               className="border border-gray-400 mb-2 p-2 rounded"
               type="text"

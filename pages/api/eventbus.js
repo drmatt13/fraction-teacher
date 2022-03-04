@@ -114,6 +114,7 @@ export default async (req, res) => {
       : undefined;
 
     res.status(200).json({ ...req.data, token, expires });
+    // res.status(200).json({ ...req.data, token });
   } catch (error) {
     console.log(`${error}`.bold.red);
     res.status(200).json({ success: false });
