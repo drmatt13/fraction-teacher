@@ -1,25 +1,21 @@
-import colors from 'colors'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
+// import bcrypt from "bcrypt";
 
-// mongoose 
-import connectDB from '../../../utils/connectDB'
-import User from '../../../models/User'
+// mongoose
+// import connectDB from "../../../utils/connectDB";
+// import User from "../../../models/User";
 
-export default connectDB(async (req, res) => {
+export default async (req, res) => {
+  const { firstName, lastName, email, password, expires } = req.body;
 
-  try {
-    req.body.password = await bcrypt.hash(req.body.password, 10);
-    const user = await User.create(req.body)
-    if (user) {
-      const user_id = user._id;
-      const bearer = jwt.sign({user_id}, process.env.BEARER_SECRET);
-      res.json({ success: true, bearer, user_id });
-    } else res.json({ success: false });
-  } catch (error) {
-    console.log("registration error".bold.red);
-    res.json({ success: false });
-  }
+  const token = jwt.sign(
+    { user_id: "123456789", expires },
+    process.env.BEARER_SECRET
+  );
 
-})
-
+  return res.json({
+    success: true,
+    token,
+    user: { user_id: "123456789" },
+  });
+};

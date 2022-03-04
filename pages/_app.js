@@ -35,7 +35,13 @@ function MyApp({ Component, pageProps }) {
     setUser_id(null);
     Cookie.remove("token");
     await router.push(
-      `/login${typeof href === "string" ? `?redirect=${href}` : ""}`
+      `/login${
+        typeof href === "string"
+          ? href === "/"
+            ? ""
+            : `?redirect=${href}`
+          : ""
+      }`
     );
   };
 

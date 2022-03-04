@@ -17,6 +17,8 @@ const Register = () => {
   const { router, user_id, setUser_id } = useContext(_appContext);
 
   const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -31,14 +33,16 @@ const Register = () => {
   const register = async () => {
     setLoading(true);
 
-    const data = await service("login", {
+    const data = await service("register", {
+      firstName,
+      lastName,
       email,
       password,
     });
     if (data.user) {
       setUser_id(data.user.user_id);
     } else {
-      alert("login failed");
+      alert("registration failed");
       setLoading(false);
     }
   };
