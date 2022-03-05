@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import Link from "next/link";
+import Cookie from "js-cookie";
 
 // components
 import Loading from "../../components/Loading";
@@ -23,7 +24,7 @@ const Login = () => {
     setLoginMethod(loginMethod === 1 ? 2 : 1);
   };
 
-  // check if a token is stored in a cookie
+  // if uder_id exists or is updated, redirect to home
   useEffect(() => {
     if (user_id) {
       router.push("/");
@@ -35,17 +36,17 @@ const Login = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="flex flex-col items-center w-60 px-4 pt-4 pb-2 bg-white rounded-lg animate-fade-in">
-          {loginMethod === 1 && <StandardLogin setLoading={setLoading} />}
+        <div className="flex flex-col items-center w-60 px-4 pt-4 pb-2 bg-gray-100/75 rounded-lg animate-fade-in">
+          {loginMethod === 1 && <DefaultLogin setLoading={setLoading} />}
           {loginMethod === 2 && <AltLogin setLoading={setLoading} />}
           <div
-            className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-black hover:bg-gray-700 text-gray-200 hover:text-white transition-colors"
+            className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-gray-900 shadow cursor-pointer bg-black hover:bg-gray-800 text-gray-200 hover:text-white transition-all hover:shadow-lg"
             onClick={toggleLoginMethod}
           >
             {loginMethod === 1 ? "alternate login" : "back"}
           </div>
           <Link href="/register">
-            <a className="mb-2 text-blue-400 hover:underline hover:text-purple-500">
+            <a className="mb-2 text-blue-500 hover:underline hover:text-purple-500">
               Sign Up Today
             </a>
           </Link>
@@ -57,7 +58,7 @@ const Login = () => {
 
 export default Login;
 
-const StandardLogin = ({ setLoading }) => {
+const DefaultLogin = ({ setLoading }) => {
   const { setUser_id } = useContext(_appContext);
 
   const [email, setEmail] = useState("");
@@ -69,9 +70,11 @@ const StandardLogin = ({ setLoading }) => {
     const data = await service("login", {
       email,
       password,
-      expires,
     });
-    if (data.user) {
+    if (data.user && data.token) {
+      Cookie.set("token", data.token, {
+        expires: expires ? undefined : 3600,
+      });
       setUser_id(data.user.user_id);
     } else {
       alert("login failed");
@@ -108,7 +111,7 @@ const StandardLogin = ({ setLoading }) => {
         <label htmlFor="expires">Stay logged in?</label>
       </div>
       <div
-        className="select-none mb-1 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-sky-500 hover:bg-sky-400 text-gray-200 hover:text-white transition-colors"
+        className="select-none mb-1 py-2 w-full flex justify-center items-center rounded border border-sky-500/75 shadow cursor-pointer bg-sky-500 hover:bg-sky-400 text-gray-200 hover:text-white transition-all hover:shadow-lg"
         onClick={login}
       >
         login
@@ -121,24 +124,24 @@ const AltLogin = ({ setLoading }) => {
   const [expires, setExpires] = useState(true);
   return (
     <div className="w-full animate-fade-in">
-      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-green-500 hover:bg-green-400 text-gray-900 hover:text-black transition-colors">
+      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-blue-600/60 shadow cursor-pointer bg-blue-600 hover:bg-blue-500 text-gray-200 hover:text-white transition-all hover:shadow-lg">
+        <i className="devicon-facebook-plain mr-2" />
+        facebook login
+      </div>
+      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-red-500/50 shadow cursor-pointer bg-red-500 hover:bg-red-500/80 text-gray-200 hover:text-white transition-all hover:shadow-lg">
+        <i className="devicon-apple-original mr-2" />
+        apple login
+      </div>
+      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-gray-900 shadow cursor-pointer bg-black hover:bg-gray-800 text-gray-200 hover:text-white transition-all hover:shadow-lg">
+        <i className="devicon-github-original mr-2 text-white" />
+        github login
+      </div>
+      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-gray-300 shadow cursor-pointer bg-white/95 hover:bg-white text-gray-900 hover:text-black transition-all hover:shadow-lg">
         <img
           className="h-4 mr-2"
           src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
         />
         google login
-      </div>
-      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-red-500/90 hover:bg-red-400 text-gray-200 hover:text-white transition-colors">
-        <i className="devicon-apple-original mr-2" />
-        apple login
-      </div>
-      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-neutral-600 hover:bg-neutral-500 text-gray-200 hover:text-white transition-colors">
-        <i className="devicon-github-original mr-2 text-black" />
-        github login
-      </div>
-      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border shadow cursor-pointer bg-blue-600 hover:bg-blue-500 text-gray-200 hover:text-white transition-colors">
-        <i className="devicon-facebook-plain mr-2" />
-        facebook login
       </div>
       <div className="w-full mb-2 flex items-center justify-center">
         <input

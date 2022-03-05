@@ -97,24 +97,7 @@ export default async (req, res) => {
         };
         break;
     }
-
-    // configure cookie expiration settings - session or permanent
-    const expires = verifiedToken
-      ? verifiedToken.expires
-      : body.data?.expires !== undefined
-      ? body.data.expires
-      : true;
-    // refresh and create new token w/ every eventbus request
-    token = req.data.token
-      ? // check if new token generated from login or register services
-        req.data.token
-      : user_id
-      ? // if not refresh
-        jwt.sign({ user_id, expires }, process.env.BEARER_SECRET)
-      : undefined;
-
-    res.status(200).json({ ...req.data, token, expires });
-    // res.status(200).json({ ...req.data, token });
+    res.status(200).json({ ...req.data });
   } catch (error) {
     console.log(`${error}`.bold.red);
     res.status(200).json({ success: false });

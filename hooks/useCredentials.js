@@ -14,9 +14,9 @@ const useCredentials = () => {
     // check if token cookie is valid and update user_id
     try {
       const data = await service("get user");
-      if (data.token) setUser_id(data.user.user_id);
+      if (data.user) setUser_id(data.user.user_id);
     } catch (error) {
-      Cookie.remove("token");
+      console.log("invalid token".bold.red);
     }
     setLoading(false);
   };

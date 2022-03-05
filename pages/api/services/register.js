@@ -6,12 +6,10 @@ import jwt from "jsonwebtoken";
 // import User from "../../../models/User";
 
 export default async (req, res) => {
-  const { firstName, lastName, email, password, expires } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  const token = jwt.sign(
-    { user_id: "123456789", expires },
-    process.env.BEARER_SECRET
-  );
+  // sign user_id into a token
+  const token = jwt.sign({ user_id: "123456789" }, process.env.BEARER_SECRET);
 
   return res.json({
     success: true,
