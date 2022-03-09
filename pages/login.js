@@ -3,13 +3,13 @@ import Link from "next/link";
 import Cookie from "js-cookie";
 
 // components
-import Loading from "../../components/Loading";
+import Loading from "../components/Loading";
 
 // context
-import _appContext from "../../context/_appContext";
+import _appContext from "../context/_appContext";
 
 // utils
-import service from "../../utils/service";
+import service from "../utils/service";
 
 // styles
 // ..
@@ -120,8 +120,18 @@ const DefaultLogin = ({ setLoading }) => {
   );
 };
 
+import { signIn } from "next-auth/react";
+
 const AltLogin = ({ setLoading }) => {
   const [expires, setExpires] = useState(true);
+
+  const test = async () => {
+    setLoading(true);
+    const data = await service("github");
+    console.log(data);
+    setLoading(false);
+  };
+
   return (
     <div className="w-full animate-fade-in">
       <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-blue-600/60 shadow cursor-pointer bg-blue-600 hover:bg-blue-500 text-gray-200 hover:text-white transition-all hover:shadow-lg">
@@ -132,7 +142,10 @@ const AltLogin = ({ setLoading }) => {
         <i className="devicon-apple-original mr-2" />
         apple login
       </div>
-      <div className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-gray-900 shadow cursor-pointer bg-black hover:bg-gray-800 text-gray-200 hover:text-white transition-all hover:shadow-lg">
+      <div
+        onClick={() => signIn("github", { callbackUrl: "/oauth?github" })}
+        className="select-none mb-2 py-2 w-full flex justify-center items-center rounded border border-gray-900 shadow cursor-pointer bg-black hover:bg-gray-800 text-gray-200 hover:text-white transition-all hover:shadow-lg"
+      >
         <i className="devicon-github-original mr-2 text-white" />
         github login
       </div>

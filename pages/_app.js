@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Cookie from "js-cookie";
+import { SessionProvider, signOut } from "next-auth/react";
 
 // components
 import AppLayout from "../components/AppLayout";
@@ -32,8 +33,9 @@ function MyApp({ Component, pageProps }) {
   );
 
   const logout = async (href) => {
-    setUser_id(null);
     Cookie.remove("token");
+    setUser_id(null);
+    signOut({ redirect: false });
     await router.push(
       `/login${
         typeof href === "string"
@@ -102,22 +104,24 @@ function MyApp({ Component, pageProps }) {
         <meta property="og:description" content="" />
         <meta property="og:image" content="" />
       </Head>
-      <_appContext.Provider
-        value={{
-          darkMode,
-          toggleDarkMode,
-          loading,
-          logout,
-          mobile,
-          router,
-          user_id,
-          setUser_id,
-        }}
-      >
-        <AppLayout>
-          <Component {...pageProps} />
-        </AppLayout>
-      </_appContext.Provider>
+      <SessionProvider session={pageProps.session}>
+        <_appContext.Provider
+          value={{
+            darkMode,
+            toggleDarkMode,
+            loading,
+            logout,
+            mobile,
+            router,
+            user_id,
+            setUser_id,
+          }}
+        >
+          <AppLayout>
+            <Component {...pageProps} />
+          </AppLayout>
+        </_appContext.Provider>
+      </SessionProvider>
     </>
   );
 }

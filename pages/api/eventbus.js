@@ -37,6 +37,11 @@ export default async (req, res) => {
       // ****  NO DB REQUIRED  *******
       // *****************************
 
+      case "github":
+        return res.json({
+          status: "success",
+        });
+
       case "get og":
         break;
 

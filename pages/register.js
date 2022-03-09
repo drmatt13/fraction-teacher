@@ -3,13 +3,13 @@ import Link from "next/link";
 import Cookie from "js-cookie";
 
 // components
-import Loading from "../../components/Loading";
+import Loading from "../components/Loading";
 
 // context
-import _appContext from "../../context/_appContext";
+import _appContext from "../context/_appContext";
 
 // utils
-import service from "../../utils/service";
+import service from "../utils/service";
 
 // styles
 // ..

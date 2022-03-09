@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // components
 import ProtectedPage from "../components/ProtectedPage";
