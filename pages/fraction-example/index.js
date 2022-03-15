@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 
+// components
+import RepeaterButton from "../../components/RepeaterButton";
+import MobileButton from "../../components/MobileButton";
+
 const FractionExample = () => {
   const [x1, setX1] = useState(1);
   const [numerator, setNumerator] = useState("1");
@@ -54,7 +58,7 @@ const FractionExample = () => {
       `}</style>
       <div className="h-screen w-screen flex flex-col justify-center items-center animate-fade-in">
         <div className="flex items-center text-xl md:text-4xl">
-          <div className="flex flex-col items-center w-20">
+          <div className="flex flex-col items-center w-12 md:w-20">
             <div>{Number(x1).toFixed(2)}</div>
             <div className="border-b border-[1px] border-black my-2 w-full" />
             <div>{Number(x1).toFixed(2)}</div>
@@ -62,7 +66,7 @@ const FractionExample = () => {
           <div className="mx-4 text-sm md:text-xl fa-regular fa-x" />
           <div className="flex flex-col">
             <input
-              className="w-20 md:w-[7.5rem] border-2 border-gray-400 rounded-md text-right"
+              className="w-[4.5rem] md:w-[7.5rem] border-2 shadow-sm rounded-md text-right"
               type="number"
               value={numerator}
               onChange={(e) => setNumerator(e.target.value)}
@@ -72,7 +76,7 @@ const FractionExample = () => {
             />
             <div className="border-b border-[1px] border-black my-2 w-full" />
             <input
-              className="w-20 md:w-[7.5rem] border-2 border-gray-400 rounded-md text-right"
+              className="w-[4.5rem] md:w-[7.5rem] border-2 shadow-sm rounded-md text-right"
               type="number"
               value={denominator}
               onChange={(e) => setDenominator(e.target.value)}
@@ -83,7 +87,7 @@ const FractionExample = () => {
           </div>
           <div className="mx-4 text-sm md:text-xl fa-solid fa-equals" />
           <div
-            className={`w-[7.5rem] flex flex-col text-center ${
+            className={`w-16 md:w-[7.5rem] flex flex-col text-center ${
               visable ? "opacity-100" : "opacity-0"
             } transition-opacity`}
           >
@@ -93,26 +97,33 @@ const FractionExample = () => {
           </div>
           <div className="mx-4 text-2xl md:text-4xl pb-1 md:pb-2">≈</div>
           <div
-            className={`md:w-24 ${
+            className={`flex flex-col ${
               visable ? "opacity-100" : "opacity-0"
             } transition-opacity`}
           >
-            {(numerator.toString().length > 0) &
-            (denominator.toString().length > 0)
-              ? isFinite(numerator / denominator)
-                ? (numerator / denominator).toFixed(2).replace(/[.,]00$/, "")
-                : "∞"
-              : "⠀"}
+            <div className="w-16 md:w-28 pb-1 border-2 rounded-md text-center">
+              {+numerator * +denominator > 0 ? "" : "-"}
+              {(numerator.toString().length > 0) &
+              (denominator.toString().length > 0)
+                ? isFinite(numerator / denominator)
+                  ? Math.abs(
+                      (numerator / denominator)
+                        .toFixed(2)
+                        .replace(/[.,]00$/, "")
+                    )
+                  : "∞"
+                : "⠀"}
+            </div>
           </div>
         </div>
         <div className="my-8 md:my-16 flex text-xl">
-          <div
-            className="mr-8 py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer hover:bg-red-300 hover:border-red-400 transition-all select-none"
-            onClick={() => {
-              setX1(+x1 - 0.01);
-            }}
-          >
-            <i className="fa-solid fa-minus" />
+          <div className="mr-8">
+            <RepeaterButton
+              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-red-300 focus:border-red-400 transition-colors select-none"
+              onHold={() => setX1((x1) => +x1 - 0.01)}
+            >
+              <i className="fa-solid fa-minus" />
+            </RepeaterButton>
           </div>
           <input
             className="w-[33.3vw] max-w-3xl"
@@ -123,22 +134,22 @@ const FractionExample = () => {
             value={x1}
             onChange={(e) => setX1(e.target.value)}
           />
-          <div
-            className="ml-8 py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer hover:bg-green-300 hover:border-green-400 transition-all select-none"
-            onClick={() => {
-              setX1(+x1 + 0.01);
-            }}
-          >
-            <i className="fa-solid fa-plus" />
+          <div className="ml-8">
+            <RepeaterButton
+              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-red-300 focus:border-red-400 transition-colors select-none"
+              onHold={() => setX1((x1) => +x1 + 0.01)}
+            >
+              <i className="fa-solid fa-plus" />
+            </RepeaterButton>
           </div>
         </div>
         <div
-          className={`text-2xl flex ${
+          className={`md:text-2xl flex ${
             visable ? "opacity-100" : "opacity-0"
           } transition-opacity`}
         >
           <div
-            className="h-[10vh] w-[25vw] md:w-[20vw] flex justify-center items-center border border-black transition-colors"
+            className="h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex justify-center items-center border border-black transition-colors"
             style={{
               backgroundColor:
                 Math.abs(+numerator) >= Math.abs(+denominator) &&
@@ -160,7 +171,7 @@ const FractionExample = () => {
           <div className="w-8 md:w-12 flex justify-center items-center text-xl md:text-4xl">
             {+numerator * +denominator > 0 ? "+" : "-"}
           </div>
-          <div className="relative h-[10vh] w-[25vw] md:w-[20vw] flex border border-black">
+          <div className="relative h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex border border-black overflow-hidden">
             <div className="absolute h-full w-full flex justify-center items-center">
               {(numerator.toString().length > 0) &
               (denominator.toString().length > 0)
@@ -197,16 +208,16 @@ const FractionExample = () => {
             />
           </div>
         </div>
-        <div
+        <MobileButton
           className={`mt-8 md:mt-16 flex justify-center items-center w-32 border border-gray-300 bg-gray-100 shadow-md py-2 rounded cursor-pointer ${
             !visable
-              ? "hover:bg-green-300 hover:border-green-400"
-              : "hover:bg-red-300 hover:border-red-400"
-          } transition-all select-none`}
+              ? "focus:bg-green-300 focus:border-green-400"
+              : "focus:bg-red-300 focus:border-red-400"
+          } transition-colors select-none`}
           onClick={() => setVisable(!visable)}
         >
           {!visable ? "Show" : "Hide"} Answers
-        </div>
+        </MobileButton>
       </div>
     </>
   );
