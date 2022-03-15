@@ -102,7 +102,11 @@ const FractionExample = () => {
             } transition-opacity`}
           >
             <div className="w-16 md:w-28 pb-1 border-2 rounded-md text-center">
-              {+numerator * +denominator > 0 ? "" : "-"}
+              {+numerator * +denominator > 0
+                ? ""
+                : numerator.length === 0
+                ? ""
+                : "-"}
               {(numerator.toString().length > 0) &
               (denominator.toString().length > 0)
                 ? isFinite(numerator / denominator)
@@ -160,7 +164,11 @@ const FractionExample = () => {
                   : `rgb(255, 255, 255)`,
             }}
           >
-            {+numerator * +denominator > 0 ? "" : "-"}
+            {+numerator * +denominator > 0
+              ? ""
+              : numerator.length === 0
+              ? ""
+              : "-"}
             {(numerator.toString().length > 0) &
             (denominator.toString().length > 0)
               ? isFinite(numerator / denominator)
