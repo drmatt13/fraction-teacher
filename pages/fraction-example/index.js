@@ -12,6 +12,11 @@ const FractionExample = () => {
   const [visable, setVisable] = useState(true);
 
   useEffect(() => {
+    if (x1 <= 0) setX1(0.01);
+    if (x1 > 10) setX1(10.0);
+  }, [x1]);
+
+  useEffect(() => {
     if (+numerator > 99) setNumerator("99");
     else if (+numerator < -99) setNumerator("-99");
     else {
@@ -123,7 +128,7 @@ const FractionExample = () => {
         <div className="my-8 md:my-16 flex text-xl">
           <div className="mr-8">
             <RepeaterButton
-              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-red-300 focus:border-red-400 transition-colors select-none"
+              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-red-300 focus:border-red-400 hover:bg-red-300 hover:border-red-400 transition-colors"
               onHold={() => setX1((x1) => +x1 - 0.01)}
             >
               <i className="fa-solid fa-minus" />
@@ -140,7 +145,7 @@ const FractionExample = () => {
           />
           <div className="ml-8">
             <RepeaterButton
-              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-red-300 focus:border-red-400 transition-colors select-none"
+              className="py-2 flex justify-center items-center w-10 border border-gray-300 bg-gray-100 shadow-md rounded cursor-pointer focus:bg-green-300 focus:border-green-400 hover:bg-green-300 hover:border-green-400 transition-colors"
               onHold={() => setX1((x1) => +x1 + 0.01)}
             >
               <i className="fa-solid fa-plus" />
@@ -153,7 +158,7 @@ const FractionExample = () => {
           } transition-opacity`}
         >
           <div
-            className="h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex justify-center items-center border border-black transition-colors"
+            className="h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex justify-center items-center shadow-lg border border-gray-500/10 transition-colors"
             style={{
               backgroundColor:
                 Math.abs(+numerator) >= Math.abs(+denominator) &&
@@ -179,7 +184,7 @@ const FractionExample = () => {
           <div className="w-8 md:w-12 flex justify-center items-center text-xl md:text-4xl">
             {+numerator * +denominator > 0 ? "+" : "-"}
           </div>
-          <div className="relative h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex border border-black overflow-hidden">
+          <div className="relative h-12 md:h-20 w-[25vw] md:w-[20vw] rounded-md md:rounded-2xl flex shadow-lg border border-gray-500/10 overflow-hidden">
             <div className="absolute h-full w-full flex justify-center items-center">
               {(numerator.toString().length > 0) &
               (denominator.toString().length > 0)
@@ -219,12 +224,17 @@ const FractionExample = () => {
         <MobileButton
           className={`mt-8 md:mt-16 flex justify-center items-center w-32 border border-gray-300 bg-gray-100 shadow-md py-2 rounded cursor-pointer ${
             !visable
-              ? "focus:bg-green-300 focus:border-green-400"
-              : "focus:bg-red-300 focus:border-red-400"
-          } transition-colors select-none`}
+              ? "focus:bg-green-300 focus:border-green-400 hover:bg-green-300 hover:border-green-400"
+              : "focus:bg-red-300 focus:border-red-400 hover:bg-red-300 hover:border-red-400"
+          } transition-colors`}
           onClick={() => setVisable(!visable)}
         >
-          {!visable ? "Show" : "Hide"} Answers
+          {!visable ? (
+            <span className="animate-fade-in-slow">Show</span>
+          ) : (
+            <span className="animate-fade-in-slow">Hide</span>
+          )}{" "}
+          Answers
         </MobileButton>
       </div>
     </>

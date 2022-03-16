@@ -5,6 +5,10 @@ const RepeaterButton = ({ children, className, onHold }) => {
   const intervalRef = useRef();
   const divRef = useRef();
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") onHold();
+  };
+
   const onMouseEnter = () => {
     divRef.current.focus();
   };
@@ -31,6 +35,22 @@ const RepeaterButton = ({ children, className, onHold }) => {
     intervalRef.current = clearInterval(intervalRef.current);
   };
 
+  const onTouchStart = (e) => {
+    onHold();
+    divRef.current.focus();
+    delayRef.current = setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        onHold();
+      }, 50);
+    }, 300);
+    const styles = divRef.current.classList;
+    for (let style of styles) {
+      if (style.startsWith("hover:")) {
+        divRef.current.classList.remove(style);
+      }
+    }
+  };
+
   const onTouchEnd = (e) => {
     e.preventDefault();
     divRef.current.blur();
@@ -40,14 +60,16 @@ const RepeaterButton = ({ children, className, onHold }) => {
 
   return (
     <button
-      className={`focus:outline-none ${className}`}
+      className={`focus:outline-none select-none ${className}`}
+      onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseMove={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
-      onTouchStart={onMouseDown}
+      onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchEnd}
       ref={divRef}
     >
       {children}
